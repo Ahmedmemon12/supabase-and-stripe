@@ -48,7 +48,8 @@ const CheckoutButton = ({ plan, price }) => {
   const { user } = useAuth();
   const stripe = useStripe();
   // const pathName = window.location.host
-  const pathName = "http://localhost:5173";
+  // const pathName = "http://localhost:5173";
+  const pathName = "https://supabase-and-stripe-zp6i.vercel.app";
   const elements = useElements();
 
   const handleCheckout = async () => {
