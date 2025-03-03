@@ -10,7 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PaymentPage from "./pages/Payments";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage.jsx";
-import Signup from "./pages/signUpPage.js";
+import Signup from "./pages/SignUpPage.js";
 import Login from "./pages/LoginPage.js";
 
 function App() {
