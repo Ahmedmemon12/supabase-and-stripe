@@ -12,7 +12,7 @@ interface RewardProgram {
 interface ProfileData {
   first_name: string;
   last_name: string;
-  phone: string;
+  phone_number: string;
   address: {
     street: string;
     city: string;
@@ -50,7 +50,7 @@ const ProfileSetup = () => {
   const [profileData, setProfileData] = useState<ProfileData>({
     first_name: "",
     last_name: "",
-    phone: "",
+    phone_number: "",
     address: {
       street: "",
       city: "",
@@ -81,13 +81,13 @@ const ProfileSetup = () => {
         setProfileData({
           first_name: profile.first_name || "",
           last_name: profile.last_name || "",
-          phone: profile.phone || "",
-          address: profile.address || {
-            street: "",
-            city: "",
-            state: "",
-            zip: "",
-            country: "",
+          phone_number: profile.phone_number || "",
+          address: {
+            street: profile.street_address || "",
+            city: profile.city || "",
+            state: profile.state || "",
+            zip: profile.zip_code || "",
+            country: profile.country || "",
           },
           reward_programs: profile.reward_programs || [],
         });
@@ -111,7 +111,7 @@ const ProfileSetup = () => {
   };
 
   const handlePhoneVerification = async () => {
-    if (!profileData.phone) {
+    if (!profileData.phone_number) {
       setError("Please enter a phone number");
       return;
     }
@@ -233,7 +233,7 @@ const ProfileSetup = () => {
         .update({
           first_name: profileData.first_name,
           last_name: profileData.last_name,
-          phone_number: profileData.phone,
+          phone_number: profileData.phone_number,
           street_address: profileData.address.street,
           city: profileData.address.city,
           state: profileData.address.state,
@@ -377,11 +377,11 @@ const ProfileSetup = () => {
                   id="phone"
                   required
                   className="flex-1 rounded-l-md border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                  value={profileData.phone}
+                  value={profileData.phone_number}
                   onChange={(e) =>
                     setProfileData((prev) => ({
                       ...prev,
-                      phone: e.target.value,
+                      phone_number: e.target.value,
                     }))
                   }
                 />
