@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertCircle, Plane } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import SocialLogin from "../components/socialLogin";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -96,6 +97,7 @@ const Login = () => {
               Sign Up
             </a>
           </p>
+          <SocialLogin />
         </div>
       </div>
     </div>
