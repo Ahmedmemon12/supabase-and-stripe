@@ -7,7 +7,8 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useAuth();
-  console.log(user);
+  const [userData, setUserData] = useState();
+  // console.log(user);
 
   const navigate = useNavigate();
 
@@ -15,6 +16,20 @@ function Navbar() {
     await supabase.auth.signOut();
     navigate("/");
   };
+
+  useEffect(() => {
+    async function getUerData() {
+      const userInfo = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user?.id);
+
+      setUserData(userInfo?.data?.length ? userInfo?.data[0] : {});
+    }
+    if (!userData) {
+      getUerData();
+    }
+  }, [user]);
 
   const scrollToFeatures = () => {
     const featuresSection = document.getElementById("features");
@@ -65,10 +80,13 @@ function Navbar() {
         {user ? (
           <div className="relative">
             <button
-              className="text-black hover:text-gray-800 transition-colors flex"
+              className="text-black hover:text-gray-800 transition-colors flex items-center gap-2"
               onClick={() => setIsMenuOpen((prev) => !prev)}
             >
-              {user.email}
+              <div className="max-w-8 aspect-square overflow-hidden rounded-full">
+                <img width={"100%"} src={userData?.avatar_url} />
+              </div>
+              {userData?.first_name}
               {isMenuOpen ? <ChevronUp /> : <ChevronDown />}
             </button>
             <div

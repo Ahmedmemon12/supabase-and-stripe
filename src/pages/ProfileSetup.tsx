@@ -20,6 +20,7 @@ interface ProfileData {
     zip: string;
     country: string;
   };
+  avatar_url: string;
   reward_programs: RewardProgram[];
 }
 
@@ -58,6 +59,7 @@ const ProfileSetup = () => {
       zip: "",
       country: "",
     },
+    avatar_url: "",
     reward_programs: [],
   });
 
@@ -89,6 +91,7 @@ const ProfileSetup = () => {
             zip: profile.zip_code || "",
             country: profile.country || "",
           },
+          avatar_url: profile.avatar_url,
           reward_programs: profile.reward_programs || [],
         });
 
@@ -283,9 +286,9 @@ const ProfileSetup = () => {
             <div className="flex flex-col items-center">
               <div className="relative">
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-                  {avatarUrl ? (
+                  {profileData.avatar_url ? (
                     <img
-                      src={avatarUrl}
+                      src={profileData.avatar_url}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
