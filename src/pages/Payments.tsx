@@ -44,7 +44,8 @@ const subscriptions = [
 ];
 
 const CheckoutButton = ({ plan, price }) => {
-  console.log(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+  // console.log(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+  // const accessToken = import.meta.env.VITE_SUPABASE_ANON_KEY
   const { user } = useAuth();
   const stripe = useStripe();
   // const pathName = window.location.host
@@ -55,7 +56,9 @@ const CheckoutButton = ({ plan, price }) => {
   const handleCheckout = async () => {
     if (!stripe || !user) return;
     // const domain = "http://localhost:3000"; // Backend API URL
-    const domain = "https://stripe-integration-ten.vercel.app"; // Backend API URL
+    // const domain = "https://stripe-integration-ten.vercel.app"; // Backend API URL
+    const domain =
+      "https://nwbcucocsmwiyttodnqe.supabase.co/functions/v1/create-checkout-session"; // Backend API URL
 
     try {
       // const { data, error } = await supabase
@@ -67,9 +70,9 @@ const CheckoutButton = ({ plan, price }) => {
       // if (error) throw error;
 
       // Send plan ID (e.g., "basic") instead of priceId
-      const response = await fetch(`${domain}/api/create_checkout`, {
+      const response = await fetch(domain, {
         method: "POST",
-        // headers: { "Content-Type": "application/json" },
+        headers: { "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53YmN1Y29jc213aXl0dG9kbnFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg5NTc3MjQsImV4cCI6MjA1NDUzMzcyNH0.gS7N4PoAoKXwUAQ_VPmOB4zbNbgMkNEyCjkpQQKmNa8` },
         body: JSON.stringify({
           plan: plan,
           userId: user.email,
@@ -120,7 +123,12 @@ const PaymentPage = () => {
             Your current Selected Plan is:{" "}
             <span className="font-bold uppercase ml-1">{selectedPlan}</span>
           </span>
-          <button className="bg-black text-white px-4 py-2 rounded-lg" onClick={()=>setSelectedPlan()}>Change Plan</button>
+          <button
+            className="bg-black text-white px-4 py-2 rounded-lg"
+            onClick={() => setSelectedPlan()}
+          >
+            Change Plan
+          </button>
         </div>
       ) : (
         <div className="min-h-screen flex items-center justify-center p-6">

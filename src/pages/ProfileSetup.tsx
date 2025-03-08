@@ -94,19 +94,6 @@ const ProfileSetup = () => {
           avatar_url: profile.avatar_url,
           reward_programs: profile.reward_programs || [],
         });
-
-        // Load avatar
-        const { data: photos } = await supabase
-          .from("profile_photos")
-          .select("url")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
-
-        if (photos) {
-          setAvatarUrl(photos.url);
-        }
       }
     } catch (err) {
       console.error("Error loading profile:", err);
@@ -160,16 +147,24 @@ const ProfileSetup = () => {
     try {
       setUploadingAvatar(true);
       const file = event.target.files?.[0];
+      console.log(event.target.files);
+      console.log(file);
+
       if (!file) return;
 
       // Upload to Supabase Storage
       const fileExt = file.name.split(".").pop();
       const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
+      console.log(fileExt);
+      console.log(fileName);
+
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(fileName, file);
 
-      if (uploadError) throw uploadError;
+      console.log(uploadData);
+
+      if (uploadError) throw uploadError.message;
 
       // Get public URL
       const {
@@ -177,12 +172,23 @@ const ProfileSetup = () => {
       } = supabase.storage.from("avatars").getPublicUrl(fileName);
 
       // Save to profile_photos
-      const { error: dbError } = await supabase.from("profile_photos").insert([
-        {
-          user_id: user?.id,
-          url: publicUrl,
-        },
-      ]);
+      // const { error: dbError } = await supabase.from("profile_photos").insert([
+      //   {
+      //     user_id: user?.id,
+      //     url: publicUrl,
+      //   },
+      // ]);
+
+      const { data, error: dbError } = await supabase
+        .from("profiles")
+        .update([
+          {
+            avatar_url: publicUrl,
+          },
+        ])
+        .eq("id", user?.id);
+
+      console.log(data);
 
       if (dbError) throw dbError;
 

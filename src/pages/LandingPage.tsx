@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Compass, Globe, Map, Play, Pause, Check } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../hooks/useAuth";
+import { TravelPreferences } from "../types/travel";
 
 const LandingPage = () => {
+  const location = useLocation();
   const [isPlaying, setIsPlaying] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const preferences = location.state?.preferences as TravelPreferences;
 
   // useEffect(() => {
   //   signOut();
   // }, []);
 
   // useEffect(async () => {
-    // const userData = supabase.auth.getUser();
-    // console.log(userData);
+  // const userData = supabase.auth.getUser();
+  // console.log(userData);
   // }, []);
 
   // const signOut = async () => {
@@ -38,7 +43,13 @@ const LandingPage = () => {
             your preferences as well as travel style and budget!
           </p>
           <Link
-            to="/login"
+            to={
+              user
+                ? preferences
+                  ? "/recommendations"
+                  : "/questionnaire"
+                : "/login"
+            }
             className="bg-white text-black px-8 py-3 rounded-lg text-lg hover:bg-gray-100 transition-colors inline-flex items-center space-x-2"
           >
             <Globe className="h-5 w-5" />
